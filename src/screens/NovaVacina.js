@@ -17,6 +17,8 @@ import { useSelector } from 'react-redux';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { updateVacina } from '../controller/EditarVacina';
 import { deletarVac } from '../controller/DeleteVacina';
+import { useDispatch } from 'react-redux';
+import { reset } from '../redux/vacinaSlice';
 
 
 
@@ -36,6 +38,8 @@ const TelaPVacina = (props) => {
     const [falhou, setFalhou] = useState(false)
     const userID = useSelector((state) => state.usuario.id)
     const vacina = useSelector((state) => state.vacina)
+    const dispatch = useDispatch()
+
 
     const onChangeV = (event, selectedDate) => {
         let currentDate = selectedDate || dateV;
@@ -60,6 +64,7 @@ const TelaPVacina = (props) => {
     };
 
     const retorno = () => {
+        dispatch(reset());
         props.navigation.pop();
     }
 
@@ -124,6 +129,7 @@ const TelaPVacina = (props) => {
         let sucesso = await updateVacina(vacina.id,vacinaN, dateV.toLocaleDateString(), datePV.toLocaleDateString(), dose, urlFoto, vacina.caminhoIMG)
         setCarregando(false)
         if (sucesso){
+            dispatch(reset())
             props.navigation.pop()
         }else{
             setFalhou(true)
@@ -135,6 +141,7 @@ const TelaPVacina = (props) => {
         let sucesso = await deletarVac(vacina.id)
         setCarregando(false)
         if(sucesso){
+            dispatch(reset())
             setExcluir(false)
             props.navigation.pop()
         }

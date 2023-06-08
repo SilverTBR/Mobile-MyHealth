@@ -6,19 +6,30 @@ import { recuperarSenha } from '../controller/resetarSenha';
 import { useState } from 'react';
 
 const RecSenha = (props) => {
-    const stackReturn = () =>{
-        props.navigation.popToTop()
-    }
 
-    const stackTela = (tela) =>{
-        props.navigation.push(tela);
-    }
-
+    const [carregando, setCarregando] = useState(false)
     const [email, setEmail] = useState ("");
+    const [msg, setMsg] = useState("")
+    const [color, setColor] = useState("#FD7979")
+
+    const chamarResetar = async () => {
+        setCarregando(true);
+        let sucesso = await recuperarSenha(email)
+        setCarregando(false)
+        console.log(sucesso)
+        if(sucesso){
+            setMsg("Email de redefinição de senha enviado com sucesso!");
+            setColor("green")
+        }else{
+            setMsg("Email invalido!")
+            setColor("#FD7979")
+        }
+
+    }
 
     return(
         <View style={estilosGeral.background}>
-            <Header action={() => stackReturn("RecSenha")}/>
+            <Header action={() => props.navigation.popToTop()}/>
             <View style={estilosGeral.conteudoCentro}>
                 <View style={estilosGeral.viewLabelCampo}>
                     <View style={[estilosGeral.viewLabelList, {flex: 15}]}>
@@ -28,10 +39,12 @@ const RecSenha = (props) => {
                     </View>
                     <View style={estilosGeral.viewCampoList}>
                         <TextInput style={estilosGeral.campo} value={email} onChangeText={setEmail}></TextInput>  
+                        <Text style={{color}}>{msg.toString()}</Text>
+
                     </View>
                 </View>
                 <View style={estilosGeral.conteudoBotao}>    
-                    <Button cor="#37BD6D" texto = "Recuperar senha" width="250" margin = "100" action={() => recuperarSenha(email)}/>
+                    <Button cor="#37BD6D" texto = "Recuperar senha" width="250" margin = "100" carregandoInterno={carregando} action={() => chamarResetar()}/>
                 </View>
             </View>
         </View>

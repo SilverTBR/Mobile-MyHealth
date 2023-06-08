@@ -14,7 +14,6 @@ import { setGlobalVacina, reset } from '../redux/vacinaSlice';
 
 const TelaHome = (props) => {
   const [pesquisa, setPesquisa] = useState("");
-  const [refresh, setRefresh] = useState(false);
   const [vacinas, setVacinas] = useState([])
   const [vacinasF, setVacinasF] = useState([]);
   const [carregando, setCarregando] = useState(false)
@@ -25,7 +24,6 @@ const TelaHome = (props) => {
   useEffect(()=> {
     let texto = pesquisa.trim()
     setVacinasF(vacinas.filter(vacina => vacina.nome.toLowerCase().includes(texto.toLowerCase())))
-    setRefresh(!refresh)
   },[pesquisa])
 
   // const ativarBusca = async () => {
@@ -35,7 +33,6 @@ const TelaHome = (props) => {
   //     setCarregando(false)
   //     setVacinas(vacinasData);
   //     setVacinasF(vacinasData);
-  //     setRefresh(!refresh);
   //     dispatch(setGlobalVacina({}));
   //       } catch (error) {
   //     console.error(error);
@@ -51,7 +48,6 @@ const TelaHome = (props) => {
       setCarregando(false)
       setVacinas(vacinasData);
       setVacinasF(vacinasData);
-      setRefresh(!refresh);
         } catch (error) {
       console.error(error);
     }
@@ -62,7 +58,7 @@ const TelaHome = (props) => {
   //   reset();
   // }, [])
 
-  const stackTela = (tela, vacina) => {
+  const stackTela = (tela) => {
     unsubscribe();
     props.navigation.push(tela);
   }
@@ -108,7 +104,7 @@ const TelaHome = (props) => {
             renderItem={renderItem}
             keyExtractor={(item) => item.id}
             numColumns={2}
-            extraData={refresh}
+            extraData={vacinasF}
             
           />
         </View>
