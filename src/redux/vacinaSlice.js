@@ -22,9 +22,10 @@ export const vacinaSlice = createSlice({
             state.dose = action.payload.dose
             state.urlIMG = action.payload.urlIMG
             state.caminhoIMG = action.payload.caminhoIMG
-        }
+        },
+        reset: (state) => valoresIniciais
     }
 })
 
-export const {setGlobalVacina} = vacinaSlice.actions
+export const {setGlobalVacina, reset} = vacinaSlice.actions
 export default vacinaSlice.reducer

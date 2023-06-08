@@ -1,7 +1,7 @@
 import { FlatList, View, Text, Image, TextInput } from 'react-native'
 import { estilosGeral } from './styles/Geral_Sty';
 import Header from '../components/Drawer/HeaderDrawer';
-import { tipoDose, verData, returnVacinas, buscaVacinasGeral } from '../controller/Vacinas';
+import { tipoDose, verData, unsubscribe, buscaVacinasGeral } from '../controller/Vacinas';
 import { useState, useEffect } from 'react';
 import { estiloHome } from './styles/Home_Sty';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
@@ -10,7 +10,7 @@ import Button from '../components/Button/Button'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { setGlobalVacina } from '../redux/vacinaSlice';
+import { setGlobalVacina, reset } from '../redux/vacinaSlice';
 
 const TelaHome = (props) => {
   const [pesquisa, setPesquisa] = useState("");
@@ -28,6 +28,20 @@ const TelaHome = (props) => {
     setRefresh(!refresh)
   },[pesquisa])
 
+  // const ativarBusca = async () => {
+  //   try {
+  //     setCarregando(true)
+  //     const vacinasData = await buscaVacinasGeral(userID);
+  //     setCarregando(false)
+  //     setVacinas(vacinasData);
+  //     setVacinasF(vacinasData);
+  //     setRefresh(!refresh);
+  //     dispatch(setGlobalVacina({}));
+  //       } catch (error) {
+  //     console.error(error);
+  //   }
+  // }
+
 
 
   props.navigation.addListener('focus', async () => {
@@ -38,14 +52,19 @@ const TelaHome = (props) => {
       setVacinas(vacinasData);
       setVacinasF(vacinasData);
       setRefresh(!refresh);
-      dispatch(setGlobalVacina({}));
         } catch (error) {
       console.error(error);
     }
   });
 
+  // useEffect(() => {
+  //   ativarBusca();
+  //   reset();
+  // }, [])
+
   const stackTela = (tela, vacina) => {
-    props.navigation.push(tela, {vacina: vacina});
+    unsubscribe();
+    props.navigation.push(tela);
   }
 
   const definindoVGlobal = (vacina) =>{

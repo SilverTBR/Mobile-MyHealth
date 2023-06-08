@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faBars } from '@fortawesome/free-solid-svg-icons/faBars'
 
 const HeaderDrawer = (props) => {
+
     return(
         <View style={estiloHeader.fundo}>
             <TouchableOpacity onPress={() => {props.navigation.openDrawer()}}>
